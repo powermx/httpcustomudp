@@ -20,7 +20,7 @@ chmod 644 /root/udp/config.json
 if [ -z "$1" ]; then
 cat <<EOF > /etc/systemd/system/udp-custom.service
 [Unit]
-Description=UDP Custom by ePro Dev. Team
+Description=UDP Custom by ePro Dev. Team -Mod. PowerMX
 
 [Service]
 User=root
