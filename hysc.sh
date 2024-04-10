@@ -441,7 +441,7 @@ unset _col
 msg -bar3
 read -p " PUERTO : " _col
 #_PA=$(grep -Po '(?<="listen": ")[^"]*' /etc/VpsPackdir/Hys/config.json | awk -F: '{print $2}')
-_PA=$(cat /etc/VpsPackdir/Hys/config.json |jq -r .listen |sed -e 's/[^0-9]//ig')
+_PA=$(grep -Po '(?<="listen": ")[^"]*' /etc/VpsPackdir/Hys/config.json | awk -F: '{print $2}')
 [[ ${_col} ]] && { 
 sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hys/config.json 
 sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hys/data
