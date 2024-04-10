@@ -147,7 +147,7 @@ echo -e "INGRESA SU SNI ( HOST FAKE ) "
 msg -bar3
     echo -e "Ingrese su Sitio WEB Falso A Hysteria 2 (elimine https://) "
 	read -rp  " [Default : plus.admcgh.online]: " proxysite
-    [[ -z $proxysite ]] && proxysite='plus.admcgh.online'
+    [[ -z $proxysite ]] && proxysite='vps.powermx.ltd'
 }
 
 inst_cert(){
@@ -283,7 +283,6 @@ echo " Authentication : ${auth_pwd}" >> /etc/VpsPackdir/Hys/data.yaml
 echo " PUERTO : ${port}" >> /etc/VpsPackdir/Hys/data.yaml
 echo " SNI : ${proxysite}" >> /etc/VpsPackdir/Hys/data.yaml
 echo " RANGO DE PUERTOS : 10000:65000" >> /etc/VpsPackdir/Hys/data.yaml
-echo -e " \n 	Power By @ChumoGH" >> /etc/VpsPackdir/Hys/data.yaml
     url="hy2://$auth_pwd@$ip:$last_port/?insecure=1&sni=$hy_domain&obfs=salamander&obfs-password=$auth_pwd#HttpInjector-hysteria2"
     echo $url > /root/hy/url.txt
     nohopurl="hy2://$auth_pwd@$ip:$port/?insecure=1&sni=$hy_domain&obfs=salamander&obfs-password=$auth_pwd#HttpInjector-hysteria2"
@@ -327,7 +326,7 @@ ip4t=$(which iptables)
 ip6t=$(which ip6tables)
 
 #OBFS=$(head /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 10)
-OBFS='ADMcghPLUS'
+OBFS='VpsPack'
 
 msg -nama 'INGRESA TU SUBDOMINIO/DOMINIO  \n'
 #msg -nama 'Prederteminado ( ENTER )\n'
@@ -340,13 +339,13 @@ msg -verd ' OK'
 } || {
 #(
 #openssl genrsa -out /etc/VpsPackdir/Hys/udpmod.ca.key 2048  2048
-#openssl req -new -x509 -days 3650 -key /etc/VpsPackdir/Hys/udpmod.ca.key -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=ChumoGH Root CA" -out /etc/VpsPackdir/Hys/udpmod.ca.crt
-#openssl req -newkey rsa:2048 -nodes -keyout /etc/VpsPackdir/Hys/udp.server.key -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=${domain}" -out /etc/VpsPackdir/Hys/udpmod.server.csr
+#openssl req -new -x509 -days 3650 -key /etc/VpsPackdir/Hys/udpmod.ca.key -subj "/C=CN/ST=GD/L=SZ/O=PowerMX, Inc./CN=PowerMX Root CA" -out /etc/VpsPackdir/Hys/udpmod.ca.crt
+#openssl req -newkey rsa:2048 -nodes -keyout /etc/VpsPackdir/Hys/udp.server.key -subj "/C=CN/ST=GD/L=SZ/O=PowerMX, Inc./CN=${domain}" -out /etc/VpsPackdir/Hys/udpmod.server.csr
 #openssl x509 -req -extfile <(printf "subjectAltName=DNS:${domain},DNS:${domain}") -days 3650 -in /etc/VpsPackdir/Hys/udpmod.server.csr -CA /etc/VpsPackdir/Hys/udpmod.ca.crt -CAkey /etc/VpsPackdir/Hys/udpmod.ca.key -CAcreateserial -out /etc/VpsPackdir/Hys/udp.server.crt
 #
 (openssl genpkey -algorithm RSA -out /etc/VpsPackdir/Hys/udpmod.ca.key
-openssl req -x509 -new -nodes -key /etc/VpsPackdir/Hys/udpmod.ca.key -days 3650 -out /etc/VpsPackdir/Hys/udpmod.ca.crt -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=ChumoGH Root CA"
-openssl req -newkey rsa:2048 -nodes -keyout /etc/VpsPackdir/Hys/udp.server.key -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=${domain}" -out /etc/VpsPackdir/Hys/udpmod.server.csr
+openssl req -x509 -new -nodes -key /etc/VpsPackdir/Hys/udpmod.ca.key -days 3650 -out /etc/VpsPackdir/Hys/udpmod.ca.crt -subj "/C=CN/ST=GD/L=SZ/O=PowerMX, Inc./CN=PowerMX Root CA"
+openssl req -newkey rsa:2048 -nodes -keyout /etc/VpsPackdir/Hys/udp.server.key -subj "/C=CN/ST=GD/L=SZ/O=PowerMX, Inc./CN=${domain}" -out /etc/VpsPackdir/Hys/udpmod.server.csr
 openssl x509 -req -extfile <(printf "subjectAltName=DNS:${domain}") -days 3650 -in /etc/VpsPackdir/Hys/udpmod.server.csr -CA /etc/VpsPackdir/Hys/udpmod.ca.crt -CAkey /etc/VpsPackdir/Hys/udpmod.ca.key -CAcreateserial -out /etc/VpsPackdir/Hys/udp.server.crt
 ) &>/dev/null && msg -verd ' OK'
 
@@ -412,7 +411,6 @@ echo " OBFS : ${OBFS}" >> /etc/VpsPackdir/Hys/data
 echo " PUERTO : 36712" >> /etc/VpsPackdir/Hys/data
 echo " ALPN : h3" >> /etc/VpsPackdir/Hys/data
 echo " RANGO DE PUERTOS : 10000:65000" >> /etc/VpsPackdir/Hys/data
-echo -e " \n 	Power By @ChumoGH" >> /etc/VpsPackdir/Hys/data
 msg -bar3
 echo ""
 echo " --- TUS DATOS DE SERVICIO SON ---"
