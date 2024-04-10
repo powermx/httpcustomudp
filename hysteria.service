@@ -12,9 +12,9 @@ ExecStartPost=ip4tbin -t nat -A PREROUTING -i iptb -p udp --dport 10000:65000 -j
 ExecStartPost=ip6tbin -t nat -A PREROUTING -i iptb -p udp --dport 10000:65000 -j DNAT --to-destination :36712
 ExecStopPost=ip4tbin -t nat -D PREROUTING -i iptb -p udp --dport 10000:65000 -j DNAT --to-destination :36712
 ExecStopPost=ip6tbin -t nat -D PREROUTING -i iptb -p udp --dport 10000:65000 -j DNAT --to-destination :36712
-WorkingDirectory=/etc/VpsPack/Hys
-Environment="PATH=/etc/VpsPack/Hys:/usr/bin:/bin"
-ExecStart=/bin/hysteria -config /etc/VpsPack/Hys/config.json server
+WorkingDirectory=/etc/VpsPackdir/Hys
+Environment="PATH=/etc/VpsPackdir/Hys:/usr/bin:/bin"
+ExecStart=/bin/hysteria -config /etc/VpsPackdir/Hys/config.json server
 
 [Install]
 WantedBy=multi-user.target
