@@ -116,7 +116,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/bin/Hysteria2 server --config /etc/VpsPack/Hys/config.yaml
+ExecStart=/bin/Hysteria2 server --config /etc/VpsPackdir/Hys/config.yaml
 WorkingDirectory=~
 User=root
 Group=root
@@ -167,7 +167,7 @@ read -p " " domainH2
 
 _hysteria2(){
 [[ -d /etc/hysteria ]] || mkdir /etc/hysteria
-[[ -d /etc/VpsPack/Hys ]] || mkdir /etc/VpsPack/Hys/
+[[ -d /etc/VpsPackdir/Hys ]] || mkdir /etc/VpsPackdir/Hys/
     install_bin
 	clear&&clear
     # Ask user for Hysteria configuration
@@ -181,7 +181,7 @@ _hysteria2(){
 	clear&&clear
     # Set up the Hysteria configuration file
 #cat << EOF > /etc/hysteria/config.yaml
-cat << EOF > /etc/VpsPack/Hys/config.yaml
+cat << EOF > /etc/VpsPackdir/Hys/config.yaml
 listen: :$port
 
 tls:
@@ -277,13 +277,13 @@ EOF
   }
 }
 EOF
-echo " IP : $(cat < /etc/VpsPackdir/ip)" > /etc/VpsPack/Hys/data.yaml
-echo " DOMINIO : ${domainH2}" >> /etc/VpsPack/Hys/data.yaml
-echo " Authentication : ${auth_pwd}" >> /etc/VpsPack/Hys/data.yaml
-echo " PUERTO : ${port}" >> /etc/VpsPack/Hys/data.yaml
-echo " SNI : ${proxysite}" >> /etc/VpsPack/Hys/data.yaml
-echo " RANGO DE PUERTOS : 10000:65000" >> /etc/VpsPack/Hys/data.yaml
-echo -e " \n 	Power By @ChumoGH" >> /etc/VpsPack/Hys/data.yaml
+echo " IP : $(cat < /etc/VpsPackdir/ip)" > /etc/VpsPackdir/Hys/data.yaml
+echo " DOMINIO : ${domainH2}" >> /etc/VpsPackdir/Hys/data.yaml
+echo " Authentication : ${auth_pwd}" >> /etc/VpsPackdir/Hys/data.yaml
+echo " PUERTO : ${port}" >> /etc/VpsPackdir/Hys/data.yaml
+echo " SNI : ${proxysite}" >> /etc/VpsPackdir/Hys/data.yaml
+echo " RANGO DE PUERTOS : 10000:65000" >> /etc/VpsPackdir/Hys/data.yaml
+echo -e " \n 	Power By @ChumoGH" >> /etc/VpsPackdir/Hys/data.yaml
     url="hy2://$auth_pwd@$ip:$last_port/?insecure=1&sni=$hy_domain&obfs=salamander&obfs-password=$auth_pwd#HttpInjector-hysteria2"
     echo $url > /root/hy/url.txt
     nohopurl="hy2://$auth_pwd@$ip:$port/?insecure=1&sni=$hy_domain&obfs=salamander&obfs-password=$auth_pwd#HttpInjector-hysteria2"
@@ -291,7 +291,7 @@ echo -e " \n 	Power By @ChumoGH" >> /etc/VpsPack/Hys/data.yaml
     systemctl daemon-reload &>/dev/null
     systemctl enable hysteria-server &>/dev/null
     systemctl start hysteria-server &>/dev/null
-    if [[ -n $(systemctl status hysteria-server 2>/dev/null | grep -w active) && -f '/etc/VpsPack/Hys/config.yaml' ]]; then
+    if [[ -n $(systemctl status hysteria-server 2>/dev/null | grep -w active) && -f '/etc/VpsPackdir/Hys/config.yaml' ]]; then
         green " Servicio Hysteria2 Iniciado Exitosamente"
     else
         red "ERROR, NO SE PUDO EJECUTAR EL SERVICIO DE HYSTERIA2 , \n\nEjecute systemctl status hysteria-server para ver el estado del servicio"
@@ -301,7 +301,7 @@ echo -e " \n 	Power By @ChumoGH" >> /etc/VpsPack/Hys/data.yaml
     #yellow "Hysteria 2 client JSON configuration file hy-client.json is as follows and saved to /root/hy/hy-client.json"
     #red "$(cat /root/hy/hy-client.json)"
 msg -bar3
-cat /etc/VpsPack/Hys/data.yaml
+cat /etc/VpsPackdir/Hys/data.yaml
 msg -bar3
     green "$APP_IMPORT_GUIDE"
     yellow "El URI de configuraci�n de Hysteria 2 (con salto de puerto) "
@@ -313,7 +313,7 @@ read -p "$(green "Hysteria 2 UDP Finalizado ") "
 
 _hysteria(){
 clear&&clear
-[[ ! -d /etc/VpsPack/Hys ]] && mkdir /etc/VpsPack/Hys
+[[ ! -d /etc/VpsPackdir/Hys ]] && mkdir /etc/VpsPackdir/Hys
 NAME=hysteria
 #VERSION=$(curl -fsSL https://api.github.com/repos/HyNetwork/hysteria/releases/latest | grep tag_name | sed -E 's/.*"v(.*)".*/\1/')
 VERSION=$(curl -fsSL https://api.github.com/repos/HyNetwork/hysteria/releases/latest | grep -w tag_name |sed -e 's/[^v.0-9 -]//ig'| tr -d '[:space:]')
@@ -335,25 +335,25 @@ read -p "DOMAIN : " domain
 sleep 4s
 del 1
 msg -nama "GENERANDO CERTIFICADO SSL (UDP). . . . "
-[[ -e /etc/VpsPack/Hys/udpmod.ca.key && -e /etc/VpsPack/Hys/udpmod.server.crt ]] && {
+[[ -e /etc/VpsPackdir/Hys/udpmod.ca.key && -e /etc/VpsPackdir/Hys/udpmod.server.crt ]] && {
 msg -verd ' OK'
 } || {
 #(
-#openssl genrsa -out /etc/VpsPack/Hys/udpmod.ca.key 2048  2048
-#openssl req -new -x509 -days 3650 -key /etc/VpsPack/Hys/udpmod.ca.key -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=ChumoGH Root CA" -out /etc/VpsPack/Hys/udpmod.ca.crt
-#openssl req -newkey rsa:2048 -nodes -keyout /etc/VpsPack/Hys/udp.server.key -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=${domain}" -out /etc/VpsPack/Hys/udpmod.server.csr
-#openssl x509 -req -extfile <(printf "subjectAltName=DNS:${domain},DNS:${domain}") -days 3650 -in /etc/VpsPack/Hys/udpmod.server.csr -CA /etc/VpsPack/Hys/udpmod.ca.crt -CAkey /etc/VpsPack/Hys/udpmod.ca.key -CAcreateserial -out /etc/VpsPack/Hys/udp.server.crt
+#openssl genrsa -out /etc/VpsPackdir/Hys/udpmod.ca.key 2048  2048
+#openssl req -new -x509 -days 3650 -key /etc/VpsPackdir/Hys/udpmod.ca.key -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=ChumoGH Root CA" -out /etc/VpsPackdir/Hys/udpmod.ca.crt
+#openssl req -newkey rsa:2048 -nodes -keyout /etc/VpsPackdir/Hys/udp.server.key -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=${domain}" -out /etc/VpsPackdir/Hys/udpmod.server.csr
+#openssl x509 -req -extfile <(printf "subjectAltName=DNS:${domain},DNS:${domain}") -days 3650 -in /etc/VpsPackdir/Hys/udpmod.server.csr -CA /etc/VpsPackdir/Hys/udpmod.ca.crt -CAkey /etc/VpsPackdir/Hys/udpmod.ca.key -CAcreateserial -out /etc/VpsPackdir/Hys/udp.server.crt
 #
-(openssl genpkey -algorithm RSA -out /etc/VpsPack/Hys/udpmod.ca.key
-openssl req -x509 -new -nodes -key /etc/VpsPack/Hys/udpmod.ca.key -days 3650 -out /etc/VpsPack/Hys/udpmod.ca.crt -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=ChumoGH Root CA"
-openssl req -newkey rsa:2048 -nodes -keyout /etc/VpsPack/Hys/udp.server.key -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=${domain}" -out /etc/VpsPack/Hys/udpmod.server.csr
-openssl x509 -req -extfile <(printf "subjectAltName=DNS:${domain}") -days 3650 -in /etc/VpsPack/Hys/udpmod.server.csr -CA /etc/VpsPack/Hys/udpmod.ca.crt -CAkey /etc/VpsPack/Hys/udpmod.ca.key -CAcreateserial -out /etc/VpsPack/Hys/udp.server.crt
+(openssl genpkey -algorithm RSA -out /etc/VpsPackdir/Hys/udpmod.ca.key
+openssl req -x509 -new -nodes -key /etc/VpsPackdir/Hys/udpmod.ca.key -days 3650 -out /etc/VpsPackdir/Hys/udpmod.ca.crt -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=ChumoGH Root CA"
+openssl req -newkey rsa:2048 -nodes -keyout /etc/VpsPackdir/Hys/udp.server.key -subj "/C=CN/ST=GD/L=SZ/O=ChumoGH, Inc./CN=${domain}" -out /etc/VpsPackdir/Hys/udpmod.server.csr
+openssl x509 -req -extfile <(printf "subjectAltName=DNS:${domain}") -days 3650 -in /etc/VpsPackdir/Hys/udpmod.server.csr -CA /etc/VpsPackdir/Hys/udpmod.ca.crt -CAkey /etc/VpsPackdir/Hys/udpmod.ca.key -CAcreateserial -out /etc/VpsPackdir/Hys/udp.server.crt
 ) &>/dev/null && msg -verd ' OK'
 
 }
 del 1
-[[ -e /etc/VpsPack/Hys/udp.server.crt ]] && chmod +x /etc/VpsPack/Hys/udp.server.crt
-[[ -e /etc/VpsPack/Hys/udp.server.key ]] && chmod +x /etc/VpsPack/Hys/udp.server.key
+[[ -e /etc/VpsPackdir/Hys/udp.server.crt ]] && chmod +x /etc/VpsPackdir/Hys/udp.server.crt
+[[ -e /etc/VpsPackdir/Hys/udp.server.key ]] && chmod +x /etc/VpsPackdir/Hys/udp.server.key
 msg -nama "     Descargando BINARIO  v${VERSION}.(FAKE). "
 #if wget -O /bin/hysteria https://github.com/apernet/hysteria/releases/download/app%2F${VERSION}/${TARBALL} &>/dev/null ; then
 if wget -O /bin/hysteria https://github.com/apernet/hysteria/releases/download/v1.3.5/${TARBALL} &>/dev/null ; then
@@ -365,13 +365,13 @@ if wget -O /bin/hysteria https://github.com/apernet/hysteria/releases/download/v
 fi
 sleep 4s && del 1
 msg -nama '     Descargando Motor JSON . . . . '
-if wget -O /etc/VpsPack/Hys/config.json https://raw.githubusercontent.com/powermx/httpcustomudp/main/hyst.json &>/dev/null ; then
-		chmod +x /etc/VpsPack/Hys/config.json
-		sed -i "s/setobfs/${OBFS}/" /etc/VpsPack/Hys/config.json
+if wget -O /etc/VpsPackdir/Hys/config.json https://raw.githubusercontent.com/powermx/httpcustomudp/main/hyst.json &>/dev/null ; then
+		chmod +x /etc/VpsPackdir/Hys/config.json
+		sed -i "s/setobfs/${OBFS}/" /etc/VpsPackdir/Hys/config.json
 		msg -verd ' OK'
 	else
 		msg -verm2 ' FAIL '
-		rm -rf /etc/VpsPack/Hys/config.json
+		rm -rf /etc/VpsPackdir/Hys/config.json
 fi
 sleep 4s && del 1
 msg -nama 'INSTALANDO AUTHSSH '
@@ -385,41 +385,41 @@ if wget -O /bin/authSSH https://raw.githubusercontent.com/powermx/httpcustomudp/
 fi
 sleep 4s && del 1
 msg -nama '     COMPILANDO BINARIO DE SYSTEMA . . . . '
-if wget -O /etc/VpsPack/Hys/hysteria.service https://raw.githubusercontent.com/powermx/httpcustomudp/main/hysteria.service &>/dev/null ; then
-		chmod +x /etc/VpsPack/Hys/hysteria.service
+if wget -O /etc/VpsPackdir/Hys/hysteria.service https://raw.githubusercontent.com/powermx/httpcustomudp/main/hysteria.service &>/dev/null ; then
+		chmod +x /etc/VpsPackdir/Hys/hysteria.service
 		systemctl disable hysteria.service &>/dev/null
 		#rm -f /etc/systemd/system/hysteria.service
 		
 		msg -verd ' OK'
 	else
 		msg -verm2 ' FAIL '
-		rm -f /etc/VpsPack/Hys/hysteria.service
+		rm -f /etc/VpsPackdir/Hys/hysteria.service
 fi
 sleep 4s && del 1
-		sed -i "s%sysb%${sys}%g" /etc/VpsPack/Hys/hysteria.service
-		sed -i "s%ip4tbin%${ip4t}%g" /etc/VpsPack/Hys/hysteria.service
-		sed -i "s%ip6tbin%${ip6t}%g" /etc/VpsPack/Hys/hysteria.service
-		sed -i "s%iptb%${interfas}%g" /etc/VpsPack/Hys/hysteria.service
+		sed -i "s%sysb%${sys}%g" /etc/VpsPackdir/Hys/hysteria.service
+		sed -i "s%ip4tbin%${ip4t}%g" /etc/VpsPackdir/Hys/hysteria.service
+		sed -i "s%ip6tbin%${ip6t}%g" /etc/VpsPackdir/Hys/hysteria.service
+		sed -i "s%iptb%${interfas}%g" /etc/VpsPackdir/Hys/hysteria.service
 		
-install -Dm644 /etc/VpsPack/Hys/hysteria.service /etc/systemd/system
+install -Dm644 /etc/VpsPackdir/Hys/hysteria.service /etc/systemd/system
 
 systemctl start hysteria &>/dev/null
 systemctl enable hysteria &>/dev/null
-rm -f /etc/VpsPack/Hys/hysteria.service /etc/VpsPack/Hys/udpmod*
-echo " IP : $(cat < /etc/VpsPackdir/ip)" > /etc/VpsPack/Hys/data
-echo " DOMINIO : ${domain}" >> /etc/VpsPack/Hys/data
-echo " OBFS : ${OBFS}" >> /etc/VpsPack/Hys/data
-echo " PUERTO : 36712" >> /etc/VpsPack/Hys/data
-echo " ALPN : h3" >> /etc/VpsPack/Hys/data
-echo " RANGO DE PUERTOS : 10000:65000" >> /etc/VpsPack/Hys/data
-echo -e " \n 	Power By @ChumoGH" >> /etc/VpsPack/Hys/data
+rm -f /etc/VpsPackdir/Hys/hysteria.service /etc/VpsPackdir/Hys/udpmod*
+echo " IP : $(cat < /etc/VpsPackdir/ip)" > /etc/VpsPackdir/Hys/data
+echo " DOMINIO : ${domain}" >> /etc/VpsPackdir/Hys/data
+echo " OBFS : ${OBFS}" >> /etc/VpsPackdir/Hys/data
+echo " PUERTO : 36712" >> /etc/VpsPackdir/Hys/data
+echo " ALPN : h3" >> /etc/VpsPackdir/Hys/data
+echo " RANGO DE PUERTOS : 10000:65000" >> /etc/VpsPackdir/Hys/data
+echo -e " \n 	Power By @ChumoGH" >> /etc/VpsPackdir/Hys/data
 msg -bar3
 echo ""
 echo " --- TUS DATOS DE SERVICIO SON ---"
 msg -bar3
 figlet -p -f smslant Hysteria | lolcat
 msg -bar3
-cat /etc/VpsPack/Hys/data
+cat /etc/VpsPackdir/Hys/data
 msg -bar3
 enter
 [[ $(ps x | grep hysteria| grep -v grep) ]] && echo -e "$(msg -verd 'SERVICIO HYSTERIA INICIADO EXITOSAMENTE')" || echo -e "$(msg -verm2 'SERVICIO HYSTERIA NO INICIADO')"
@@ -429,10 +429,10 @@ _menuH
 _menuH(){
 clear&&clear
 msg -bar3
-cat /etc/VpsPack/Hys/data
+cat /etc/VpsPackdir/Hys/data
 msg -bar3
 unset op
-[[ $(cat /etc/VpsPack/Hys/config.json | grep -w '//"alpn"') ]] && _ap='\033[0;31mOFF' || _ap='\033[0;32mON'
+[[ $(cat /etc/VpsPackdir/Hys/config.json | grep -w '//"alpn"') ]] && _ap='\033[0;31mOFF' || _ap='\033[0;32mON'
 menu_func "CAMBIAR PUERTO" "CAMBIAR OBFS" "ALPN (http injector)  \033[0;32m[ ${_ap}\033[0;32m ]" "REINICIAR SERVICIO" "\033[0;31mREMOVER SERVICIO"
 msg -bar3
   selecy=$(selection_fun 5)  
@@ -443,12 +443,12 @@ unset _col
 msg -bar3
 echo  -e "INGRESE EL NUEVO PUERTO DE SERVICIO "
 read -p " PUERTO : " _col
-#_PA=$(cat /etc/VpsPack/Hys/config.json | grep -i listen |cut -d '"' -f4 |sed -e 's/[^0-9]//ig')
-_PA=$(cat /etc/VpsPack/Hys/config.json |jq -r .listen |sed -e 's/[^0-9]//ig')
-  #sed -i "s%/bin/false%filemancgh%g" /etc/VpsPack/Hys/config.json
+#_PA=$(cat /etc/VpsPackdir/Hys/config.json | grep -i listen |cut -d '"' -f4 |sed -e 's/[^0-9]//ig')
+_PA=$(cat /etc/VpsPackdir/Hys/config.json |jq -r .listen |sed -e 's/[^0-9]//ig')
+  #sed -i "s%/bin/false%filemancgh%g" /etc/VpsPackdir/Hys/config.json
 [[ ${_col} ]] && { 
-sed -i "s/${_PA}/${_col}/" /etc/VpsPack/Hys/config.json 
-sed -i "s/${_PA}/${_col}/" /etc/VpsPack/Hys/data
+sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hys/config.json 
+sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hys/data
 systemctl restart hysteria &>/dev/null
 }
   ;;
@@ -458,22 +458,22 @@ unset _col
 msg -bar3
 echo  -e "INGRESE SU NUEVO OBFS "
 read -p " OBFS : " _col
-_obfs=$(cat /etc/VpsPack/Hys/config.json |jq -r .obfs)
-  #sed -i "s%/bin/false%filemancgh%g" /etc/VpsPack/Hys/config.json
+_obfs=$(cat /etc/VpsPackdir/Hys/config.json |jq -r .obfs)
+  #sed -i "s%/bin/false%filemancgh%g" /etc/VpsPackdir/Hys/config.json
 [[ ${_col} ]] && { 
-sed -i "s/${_obfs}/${_col}/" /etc/VpsPack/Hys/config.json 
-sed -i "s/${_obfs}/${_col}/" /etc/VpsPack/Hys/data
+sed -i "s/${_obfs}/${_col}/" /etc/VpsPackdir/Hys/config.json 
+sed -i "s/${_obfs}/${_col}/" /etc/VpsPackdir/Hys/data
 systemctl restart hysteria &>/dev/null
 }
 ;;
 3)
 clear&&clear
-[[ $(cat /etc/VpsPack/Hys/config.json | grep -w '//"alpn"') ]] && { 
-sed -i '12d' /etc/VpsPack/Hys/config.json 
-sed -i '12i\        "alpn": "h3",' /etc/VpsPack/Hys/config.json 
+[[ $(cat /etc/VpsPackdir/Hys/config.json | grep -w '//"alpn"') ]] && { 
+sed -i '12d' /etc/VpsPackdir/Hys/config.json 
+sed -i '12i\        "alpn": "h3",' /etc/VpsPackdir/Hys/config.json 
 } || {
-sed -i '12d' /etc/VpsPack/Hys/config.json 
-sed -i '12i\        //"alpn": "h3",' /etc/VpsPack/Hys/config.json 
+sed -i '12d' /etc/VpsPackdir/Hys/config.json 
+sed -i '12i\        //"alpn": "h3",' /etc/VpsPackdir/Hys/config.json 
 }
 systemctl restart hysteria &>/dev/null
 ;;
@@ -485,7 +485,7 @@ systemctl restart hysteria &>/dev/null
 ;;
 5)
 clear&&clear
-rm -f /etc/VpsPack/Hys/*
+rm -f /etc/VpsPackdir/Hys/*
 systemctl disable hysteria &>/dev/null
 systemctl remove hysteria &>/dev/null
 rm -f /etc/systemd/system/hysteria.service
@@ -498,7 +498,7 @@ exit
 _menuH2(){
 clear&&clear
 msg -bar3
-cat /etc/VpsPack/Hys/data.yaml
+cat /etc/VpsPackdir/Hys/data.yaml
 msg -bar3
 green "$APP_IMPORT_GUIDE"
 yellow "El URI de configuraci�n de Hysteria 2 (con salto de puerto) "
@@ -507,7 +507,7 @@ yellow "El URI de configuraci�n de Hysteria 2 (sin salto de puerto) "
 red "$(cat /root/hy/url-nohop.txt)"
 msg -bar3
 unset op
-[[ $(cat /etc/VpsPack/Hys/config.yaml | grep -w '//"alpn"') ]] && _ap='\033[0;31mOFF' || _ap='\033[0;32mON'
+[[ $(cat /etc/VpsPackdir/Hys/config.yaml | grep -w '//"alpn"') ]] && _ap='\033[0;31mOFF' || _ap='\033[0;32mON'
 menu_func "CAMBIAR PUERTO" "CAMBIAR CONTRASE�A" "REINICIAR SERVICIO" "\033[0;31mREMOVER SERVICIO"
 msg -bar3
   selecy=$(selection_fun 5)  
@@ -516,7 +516,7 @@ case $selecy in
 clear&&clear
 unset _col
 msg -bar3
-    oldport=$(cat /etc/VpsPack/Hys/config.yaml 2>/dev/null | sed -n 1p | awk '{print $2}' | awk -F ":" '{print $2}')    
+    oldport=$(cat /etc/VpsPackdir/Hys/config.yaml 2>/dev/null | sed -n 1p | awk '{print $2}' | awk -F ":" '{print $2}')    
 	echo  -e "INGRESE EL NUEVO PUERTO DE SERVICIO "
 	read -p "Puerto [1-65535] (Puerto Ramdom Enter): " port
     [[ -z $port ]] && port=$(shuf -i 2000-65535 -n 1)
@@ -527,7 +527,7 @@ msg -bar3
             [[ -z $port ]] && port=$(shuf -i 2000-65535 -n 1)
         fi
     done
-    sed -i "1s#$oldport#$port#g" /etc/VpsPack/Hys/config.yaml
+    sed -i "1s#$oldport#$port#g" /etc/VpsPackdir/Hys/config.yaml
     sed -i "1s#$oldport#$port#g" /root/hy/hy-client.yaml
     sed -i "2s#$oldport#$port#g" /root/hy/hy-client.json
     sed -i "s#$oldport#$port#g" /root/hy/url.txt
@@ -539,14 +539,14 @@ msg -bar3
 clear&&clear
 unset _col
 msg -bar3
-    oldpasswd=$(cat /etc/VpsPack/Hys/config.yaml 2>/dev/null | sed -n 20p | awk '{print $2}')
-    oldobfs=$(cat /etc/VpsPack/Hys/config.yaml 2>/dev/null | sed -n 10p | awk '{print $2}')
+    oldpasswd=$(cat /etc/VpsPackdir/Hys/config.yaml 2>/dev/null | sed -n 20p | awk '{print $2}')
+    oldobfs=$(cat /etc/VpsPackdir/Hys/config.yaml 2>/dev/null | sed -n 10p | awk '{print $2}')
 	echo  -e "INGRESE SU NUEVA CLAVE/CONTRASE�A "
     read -p " (Enter Clave RAMDON): " passwd
     [[ -z $passwd ]] && passwd=$(date +%s%N | md5sum | cut -c 1-8)
 
-    sed -i "20s#$oldpasswd#$passwd#g" /etc/VpsPack/Hys/config.yaml
-    sed -i "10s#$oldobfs#$passwd#g" /etc/VpsPack/Hys/config.yaml
+    sed -i "20s#$oldpasswd#$passwd#g" /etc/VpsPackdir/Hys/config.yaml
+    sed -i "10s#$oldobfs#$passwd#g" /etc/VpsPackdir/Hys/config.yaml
     sed -i "3s#$oldpasswd#$passwd#g" /root/hy/hy-client.yaml
     sed -i "9s#$oldobfs#$passwd#g" /root/hy/hy-client.yaml
     sed -i "3s#$oldpasswd#$passwd#g" /root/hy/hy-client.json
@@ -562,7 +562,7 @@ stophysteria && starthysteria
 ;;
 4)
 clear&&clear
-rm -f /etc/VpsPack/Hys/*
+rm -f /etc/VpsPackdir/Hys/*
     systemctl stop hysteria-server.service >/dev/null 2>&1
     systemctl disable hysteria-server.service >/dev/null 2>&1
     rm -f /lib/systemd/system/hysteria-server.service /lib/systemd/system/hysteria-server@.service
@@ -607,21 +607,21 @@ After=network.target
 
 [Service]
 User=root
-Group=root'	> /etc/VpsPack/Hys/hysteria.service
+Group=root'	> /etc/VpsPackdir/Hys/hysteria.service
 echo "ExecStartPost=${sys} net.ipv4.ip_forward=1
 ExecStartPost=${sys} net.ipv4.conf.all.rp_filter=0
 ExecStartPost=${sys} net.ipv4.conf.${interfas}.rp_filter=0
 ExecStartPost=${ip4t} -t nat -A PREROUTING -i ${interfas} -p udp --dport 10000:65000 -j DNAT --to-destination :36712
 ExecStartPost=${ip6t} -t nat -A PREROUTING -i ${interfas} -p udp --dport 10000:65000 -j DNAT --to-destination :36712
 ExecStopPost=${ip4t} -t nat -D PREROUTING -i ${interfas} -p udp --dport 10000:65000 -j DNAT --to-destination :36712
-ExecStopPost=${ip6t} -t nat -D PREROUTING -i ${interfas} -p udp --dport 10000:65000 -j DNAT --to-destination :36712" >> /etc/VpsPack/Hys/hysteria.service
+ExecStopPost=${ip6t} -t nat -D PREROUTING -i ${interfas} -p udp --dport 10000:65000 -j DNAT --to-destination :36712" >> /etc/VpsPackdir/Hys/hysteria.service
 
-echo 'WorkingDirectory=/etc/VpsPack/Hys
-Environment="PATH=/etc/VpsPack/Hys"
-ExecStart=/bin/hysteria -config /etc/VpsPack/Hys/config.json server
+echo 'WorkingDirectory=/etc/VpsPackdir/Hys
+Environment="PATH=/etc/VpsPackdir/Hys"
+ExecStart=/bin/hysteria -config /etc/VpsPackdir/Hys/config.json server
 
 [Install]
 WantedBy=multi-user.target
-' >> /etc/VpsPack/Hys/hysteria.service
+' >> /etc/VpsPackdir/Hys/hysteria.service
 		
 }
