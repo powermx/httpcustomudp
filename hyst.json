@@ -1,0 +1,19 @@
+{
+   "listen": ":36712",
+	"cert": "/etc/adm-lite/HYSTERIA/udp.server.crt",
+	"key": "/etc/adm-lite/HYSTERIA/udp.server.key",
+	"protocol": "udp",
+	"up": "100 Mbps",
+	"up_mbps": 100,
+	"down": "100 Mbps",
+	"down_mbps": 100,
+	"disable_udp": false,
+	"obfs": "setobfs",
+	//"alpn": "h3",
+	"auth": {
+		"mode": "external",
+		"config": {
+			"cmd": "/bin/authSSH"
+		}
+	}
+}
