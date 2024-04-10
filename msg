@@ -43,7 +43,7 @@ tittle () {
 [[ -z $1 ]] && rt='VpsPackdir' || rt='VpsPackdir'
     clear&&clear
     msg -bar3
-    echo -e "\033[1;44;44m   \033[1;33m=====>>►► VpsPack ◄◄<<=====  \033[0m \033[0;33m[$(less /etc/${rt}/v-local.log)]"
+    figlet -p -f slant < /root/name
     msg -bar3
 }
 in_opcion(){
