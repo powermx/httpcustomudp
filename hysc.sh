@@ -439,21 +439,15 @@ case $selecy in
 clear&&clear
 unset _col
 msg -bar3
-echo "INGRESE EL NUEVO PUERTO DE HYSTERIA:"
-read -p "PUERTO: " new_port
-if ! [[ "$new_port" =~ ^[0-9]+$ ]]; then
-    echo "Error: El puerto ingresado no es válido."
-    exit 1
-fi
-config_file="/etc/VpsPackdir/Hys/config.json"
-current_listen=$(grep -Po '"listen": "\K[^"]+' "$config_file")
-new_listen="\"listen\": \":$new_port\""
-sed -i "s/\"listen\": \":[0-9]\+\"/$new_listen/" "$config_file"
+read -p " PUERTO : " _col
+#_PA=$(grep -Po '(?<="listen": ")[^"]*' /etc/VpsPackdir/Hys/config.json | awk -F: '{print $2}')
+_PA=$(cat /etc/VpsPackdir/Hysconfig.json |jq -r .listen |sed -e 's/[^0-9]//ig')
+  #sed -i "s%/bin/false%filemancgh%g" /etc/VpsPackdir/Hysconfig.json
+[[ ${_col} ]] && { 
+sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hysconfig.json 
+sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hysdata
 systemctl restart hysteria &>/dev/null
-echo "EL PUERTO SE HA ACTUALIZADO A: $new_port."
-echo " "
-echo "SI REQUIERE CAMBIAR EL PUERTO DE IPTABLES DE UDP"
-echo "VAYA A LAS HERRAMIENTAS DEL SCRIPT EN LA SECCION DE UDP IPTABLES"
+}
   ;;
   2)
 clear&&clear
