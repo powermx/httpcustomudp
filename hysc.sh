@@ -277,7 +277,7 @@ EOF
   }
 }
 EOF
-echo " IP : $(cat < /bin/ejecutar/IPcgh)" > /etc/VpsPack/Hys/data.yaml
+echo " IP : $(cat < /etc/VpsPackdir/ip)" > /etc/VpsPack/Hys/data.yaml
 echo " DOMINIO : ${domainH2}" >> /etc/VpsPack/Hys/data.yaml
 echo " Authentication : ${auth_pwd}" >> /etc/VpsPack/Hys/data.yaml
 echo " PUERTO : ${port}" >> /etc/VpsPack/Hys/data.yaml
@@ -406,7 +406,7 @@ install -Dm644 /etc/VpsPack/Hys/hysteria.service /etc/systemd/system
 systemctl start hysteria &>/dev/null
 systemctl enable hysteria &>/dev/null
 rm -f /etc/VpsPack/Hys/hysteria.service /etc/VpsPack/Hys/udpmod*
-echo " IP : $(cat < /bin/ejecutar/IPcgh)" > /etc/VpsPack/Hys/data
+echo " IP : $(cat < /etc/VpsPackdir/ip)" > /etc/VpsPack/Hys/data
 echo " DOMINIO : ${domain}" >> /etc/VpsPack/Hys/data
 echo " OBFS : ${OBFS}" >> /etc/VpsPack/Hys/data
 echo " PUERTO : 36712" >> /etc/VpsPack/Hys/data
