@@ -160,12 +160,12 @@ SEMCOR='\e[0m'
   -blak2) cor="${COLOR[8]}" && echo -e "${cor}${2}${SEMCOR}";;
   -blu) cor="${COLOR[9]}${NEGRITO}" && echo -e "${cor}${2}${SEMCOR}";;
   -blu1) cor="${COLOR[9]}" && echo -e "${cor}${2}${SEMCOR}";;
-  -bar) ccor="${COLOR[1]}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" && echo -e "${SEMCOR}${ccor}${SEMCOR}";;
-  -bar1) ccor="${COLOR[1]}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" && echo -e "${SEMCOR}${ccor}${SEMCOR}";;
+  -bar) ccor="${COLOR[1]}───────────────── /// ─────────────────" && echo -e "${SEMCOR}${ccor}${SEMCOR}";;
+  -bar1) ccor="${COLOR[1]}───────────────── /// ─────────────────" && echo -e "${SEMCOR}${ccor}${SEMCOR}";;
   -bar2) ccor="${COLOR[1]}───────────────── /// ─────────────────" && echo -e "${SEMCOR}${ccor}${SEMCOR}";;
-  -bar3) ccor="${COLOR[3]}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" && echo -e "${SEMCOR}${ccor}${SEMCOR}";;
+  -bar3) ccor="${COLOR[3]}───────────────── /// ─────────────────" && echo -e "${SEMCOR}${ccor}${SEMCOR}";;
   -bar4) ccor="${COLOR[5]}•••••••••••••••••••••••••••••••••••••••••••••••••" && echo -e "${SEMCOR}${ccor}${SEMCOR}";;
-  -br) ccor="━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" && echo -e "${ccor}";;
+  -br) ccor="───────────────── /// ─────────────────" && echo -e "${ccor}";;
    esac
 }
 
