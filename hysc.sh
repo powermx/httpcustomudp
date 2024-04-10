@@ -26,25 +26,25 @@ yellow(){
 }
 
 
-starthysteria(){
-    systemctl start hysteria-server &>/dev/null
-    systemctl enable hysteria-server &>/dev/null 2>&1
+start(){
+    systemctl start -server &>/dev/null
+    systemctl enable -server &>/dev/null 2>&1
 }
 
-stophysteria(){
-    systemctl stop hysteria-server &>/dev/null
-    systemctl disable hysteria-server &>/dev/null 2>&1
+stop(){
+    systemctl stop -server &>/dev/null
+    systemctl disable -server &>/dev/null 2>&1
 }
 
 showConf(){
-    #yellow "Hysteria 2 client YML configuration file hy-client.yaml is as follows and saved to /root/hy/hy-client.yaml"
+    #yellow " 2 client YML configuration file hy-client.yaml is as follows and saved to /root/hy/hy-client.yaml"
     #red "$(cat /root/hy/hy-client.yaml)"
-    #yellow "Hysteria 2 client JSON configuration file hy-client.json is as follows and saved to /root/hy/hy-client.json"
+    #yellow " 2 client JSON configuration file hy-client.json is as follows and saved to /root/hy/hy-client.json"
     #red "$(cat /root/hy/hy-client.json)"
     green "$APP_IMPORT_GUIDE"
-    yellow "Hysteria 2 config URI (with port hop) is as follows and saved to /root/hy/url.txt"
+    yellow " 2 config URI (with port hop) is as follows and saved to /root/hy/url.txt"
     red "$(cat /root/hy/url.txt)"
-    yellow "Hysteria 2 config URI (without port hop) is as follows and saved to /root/hy/url-nohop.txt"
+    yellow " 2 config URI (without port hop) is as follows and saved to /root/hy/url-nohop.txt"
     red "$(cat /root/hy/url-nohop.txt)"
 }
 
@@ -353,9 +353,9 @@ openssl x509 -req -extfile <(printf "subjectAltName=DNS:${domain}") -days 3650 -
 del 1
 [[ -e /etc/VpsPackdir/Hys/udp.server.crt ]] && chmod +x /etc/VpsPackdir/Hys/udp.server.crt
 [[ -e /etc/VpsPackdir/Hys/udp.server.key ]] && chmod +x /etc/VpsPackdir/Hys/udp.server.key
-msg -nama "     Descargando BINARIO  v${VERSION}.(FAKE). "
+msg -nama "     Descargando BINARIO  v 1.3.5 "
 #if wget -O /bin/hysteria https://github.com/apernet/hysteria/releases/download/app%2F${VERSION}/${TARBALL} &>/dev/null ; then
-if wget -O /bin/hysteria https://github.com/apernet/hysteria/releases/download/v1.3.5/${TARBALL} &>/dev/null ; then
+if wget -O /bin/hysteria https://github.com/apernet/hysteria/releases/download/v1.3.5/hysteria-linux-amd64 &>/dev/null ; then
 		chmod +x /bin/hysteria
 		msg -verd ' OK'
 	else
