@@ -452,12 +452,15 @@ systemctl restart hysteria &>/dev/null
 clear&&clear
 unset _col
 msg -bar3
-echo "INGRESE EL NUEVO OBFS:"
-read -p "OBFS: " new_obfs
-config_file="/etc/VpsPackdir/Hys/config.json"
-sed -i "s/\"obfs\": \"[^\"]*\"/\"obfs\": \"$new_obfs\"/" "$config_file"
+echo  -e "INGRESE SU NUEVO OBFS "
+read -p " OBFS : " _col
+_obfs=$(grep -Po '(?<="obfs": ")[^"]*' /etc/VpsPackdir/Hys/config.json)
+  #sed -i "s%/bin/false%filemancgh%g" /etc/VpsPackdir/Hys/config.json
+[[ ${_col} ]] && { 
+sed -i "s/${_obfs}/${_col}/" /etc/VpsPackdir/Hys/config.json 
+sed -i "s/${_obfs}/${_col}/" /etc/VpsPackdir/Hys/data
 systemctl restart hysteria &>/dev/null
-echo "EL OBFS SE HA ACTUALIZADO A: '$new_obfs'."
+}
 ;;
 3)
 clear&&clear
