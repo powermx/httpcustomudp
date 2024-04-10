@@ -585,10 +585,9 @@ unset port
   tittle
 if [ -f "/etc/VpsPackdir/Hys/data" ]; then
     cat /etc/VpsPackdir/Hys/data
+echo -e "${YELLOW}───────────────── /// ─────────────────"
 fi
-
   #menu_func " UDP-REQUEST  SocksIP    \033[0;31m[${_So}\033[0;31m]${_MSYS}" "UDP-CUSTOM HTTPCustom \033[0;31m[${_Cu}\01[0;31m]${_MSYS}" "UDP-Hysteria APPMod's \033[0;31m[${_HIS}\033[0;31m] ${_MSYS}"
-msg -bar3  
 echo -e "  ${GREEN}[1] ${YELLOW}UDP-Hysteria APPMod's        \033[0;31m[${_HIS}\033[0;31m]"
   msg -bar3
   echo -ne "$(msg -verd "  [0]") $(msg -verm2 "=>>") " && msg -bra "\033[1;41m Volver "
