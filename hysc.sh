@@ -593,7 +593,7 @@ unset port
   opcion=$(selection_fun 4)
   case $opcion in
   1) [[ $(ps x | grep -w "/bin/hysteria"| grep -v grep) ]] && _menuH || _hysteria ;;
-  0) exit;;
+  0) vpspack;;
   esac  
 done
 
