@@ -1,7 +1,7 @@
 {
    "listen": ":36712",
-	"cert": "/etc/adm-lite/HYSTERIA/udp.server.crt",
-	"key": "/etc/adm-lite/HYSTERIA/udp.server.key",
+	"cert": "/etc/VpsPackdir/Hys/udp.server.crt",
+	"key": "/etc/VpsPackdir/Hys/udp.server.key",
 	"protocol": "udp",
 	"up": "100 Mbps",
 	"up_mbps": 100,
