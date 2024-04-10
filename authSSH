@@ -35,7 +35,7 @@ fi
 [[ ! -e /etc/cghkey ]] && echo -e "NO EXISTEN VALIDADORES DEL SCRIPT" && exit
 
 [[ -e /etc/cghkey ]] && {
-[[ -z ${IP} ]] && IP=$(cat < /bin/ejecutar/IPcgh)
+[[ -z ${IP} ]] && IP=$(cat < /etc/VpsPackdir/ip)
 Key="$(cat /etc/cghkey)"
 IiP="$(ofus "$Key" | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')"
 [[ ! -e /file ]] && wget -q -O /file https://raw.githubusercontent.com/powermx/httpcustomudp/main/txt.txt
