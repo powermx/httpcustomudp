@@ -208,7 +208,7 @@ sysctl -w net.ipv6.conf.lo.disable_ipv6=1 &> /dev/null
 
 [[ -d /bin/ejecutar ]] && {
 [[ ! -e /etc/cghkey ]] && rm -rf /etc/VpsPack
-[[ -e /bin/ejecutar/msg ]] || wget -q -O /bin/ejecutar/msg https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/msg-bar/msg 
+[[ -e /bin/ejecutar/msg ]] || wget -q -O /bin/ejecutar/msg https://raw.githubusercontent.com/powermx/httpcustomudp/main/msg
 } || mkdir /bin/ejecutar
 cor[0]="\033[0m"
 cor[1]="\033[1;34m"
