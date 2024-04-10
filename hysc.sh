@@ -439,7 +439,7 @@ case $selecy in
 clear&&clear
 unset _col
 msg -bar3
-echo "Ingrese el nuevo puerto de servicio:"
+echo "INGRESE EL NUEVO PUERTO DE HYSTERIA:"
 read -p "PUERTO: " new_port
 if ! [[ "$new_port" =~ ^[0-9]+$ ]]; then
     echo "Error: El puerto ingresado no es válido."
@@ -451,21 +451,20 @@ new_listen="\"listen\": \":$new_port\""
 sed -i "s/\"listen\": \":[0-9]\+\"/$new_listen/" "$config_file"
 systemctl restart hysteria &>/dev/null
 echo "EL PUERTO SE HA ACTUALIZADO A: $new_port."
-}
+echo " "
+echo "SI REQUIERE CAMBIAR EL PUERTO DE IPTABLES DE UDP"
+echo "VAYA A LAS HERRAMIENTAS DEL SCRIPT EN LA SECCION DE UDP IPTABLES"
   ;;
   2)
 clear&&clear
 unset _col
 msg -bar3
-echo  -e "INGRESE SU NUEVO OBFS "
-read -p " OBFS : " _col
-_obfs=$(cat /etc/VpsPackdir/Hys/config.json |jq -r .obfs)
-  #sed -i "s%/bin/false%filemancgh%g" /etc/VpsPackdir/Hys/config.json
-[[ ${_col} ]] && { 
-sed -i "s/${_obfs}/${_col}/" /etc/VpsPackdir/Hys/config.json 
-sed -i "s/${_obfs}/${_col}/" /etc/VpsPackdir/Hys/data
+echo "INGRESE EL NUEVO OBFS:"
+read -p "OBFS: " new_obfs
+config_file="/etc/VpsPackdir/Hys/config.json"
+sed -i "s/\"obfs\": \"[^\"]*\"/\"obfs\": \"$new_obfs\"/" "$config_file"
 systemctl restart hysteria &>/dev/null
-}
+echo "EL OBFS SE HA ACTUALIZADO A: '$new_obfs'."
 ;;
 3)
 clear&&clear
