@@ -441,11 +441,10 @@ unset _col
 msg -bar3
 read -p " PUERTO : " _col
 #_PA=$(grep -Po '(?<="listen": ")[^"]*' /etc/VpsPackdir/Hys/config.json | awk -F: '{print $2}')
-_PA=$(cat /etc/VpsPackdir/Hysconfig.json |jq -r .listen |sed -e 's/[^0-9]//ig')
-  #sed -i "s%/bin/false%filemancgh%g" /etc/VpsPackdir/Hysconfig.json
+_PA=$(cat /etc/VpsPackdir/Hys/config.json |jq -r .listen |sed -e 's/[^0-9]//ig')
 [[ ${_col} ]] && { 
-sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hysconfig.json 
-sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hysdata
+sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hys/config.json 
+sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hys/data
 systemctl restart hysteria &>/dev/null
 }
   ;;
