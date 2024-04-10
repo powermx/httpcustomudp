@@ -415,7 +415,7 @@ msg -bar3
 echo ""
 echo " --- TUS DATOS DE SERVICIO SON ---"
 msg -bar3
-figlet -p -f smslant Hysteria | lolcat
+figlet -p -f smslant Hysteria
 msg -bar3
 cat /etc/VpsPackdir/Hys/data
 msg -bar3
