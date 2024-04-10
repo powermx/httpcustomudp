@@ -586,6 +586,7 @@ unset port
 if [ -f "/etc/VpsPackdir/Hys/data" ]; then
     cat /etc/VpsPackdir/Hys/data
 fi
+msg -bar3
   #menu_func " UDP-REQUEST  SocksIP    \033[0;31m[${_So}\033[0;31m]${_MSYS}" "UDP-CUSTOM HTTPCustom \033[0;31m[${_Cu}\01[0;31m]${_MSYS}" "UDP-Hysteria APPMod's \033[0;31m[${_HIS}\033[0;31m] ${_MSYS}"
   echo -e "  ${GREEN}[1] ${YELLOW}UDP-Hysteria APPMod's        \033[0;31m[${_HIS}\033[0;31m]"
   msg -bar3
