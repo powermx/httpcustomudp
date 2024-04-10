@@ -363,7 +363,7 @@ if wget -O /bin/hysteria https://github.com/apernet/hysteria/releases/download/v
 		rm -f /bin/hysteria
 fi
 sleep 4s && del 1
-msg -nama '     Descargando Motor JSON . . . . '
+msg -nama '     Descargando Conf JSON . . . . '
 if wget -O /etc/VpsPackdir/Hys/config.json https://raw.githubusercontent.com/powermx/httpcustomudp/main/hyst.json &>/dev/null ; then
 		chmod +x /etc/VpsPackdir/Hys/config.json
 		sed -i "s/setobfs/${OBFS}/" /etc/VpsPackdir/Hys/config.json
@@ -439,15 +439,18 @@ case $selecy in
 clear&&clear
 unset _col
 msg -bar3
-echo  -e "INGRESE EL NUEVO PUERTO DE SERVICIO "
-read -p " PUERTO : " _col
-#_PA=$(cat /etc/VpsPackdir/Hys/config.json | grep -i listen |cut -d '"' -f4 |sed -e 's/[^0-9]//ig')
-_PA=$(cat /etc/VpsPackdir/Hys/config.json |jq -r .listen |sed -e 's/[^0-9]//ig')
-  #sed -i "s%/bin/false%filemancgh%g" /etc/VpsPackdir/Hys/config.json
-[[ ${_col} ]] && { 
-sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hys/config.json 
-sed -i "s/${_PA}/${_col}/" /etc/VpsPackdir/Hys/data
+echo "Ingrese el nuevo puerto de servicio:"
+read -p "PUERTO: " new_port
+if ! [[ "$new_port" =~ ^[0-9]+$ ]]; then
+    echo "Error: El puerto ingresado no es válido."
+    exit 1
+fi
+config_file="/etc/VpsPackdir/Hys/config.json"
+current_listen=$(grep -Po '"listen": "\K[^"]+' "$config_file")
+new_listen="\"listen\": \":$new_port\""
+sed -i "s/\"listen\": \":[0-9]\+\"/$new_listen/" "$config_file"
 systemctl restart hysteria &>/dev/null
+echo "EL PUERTO SE HA ACTUALIZADO A: $new_port."
 }
   ;;
   2)
