@@ -11,7 +11,7 @@ PLAIN="\033[0m"
 
 APP_IMPORT_GUIDE="  Open 'HTTP Injector' \n  app -> Tunnel Type set 'Hysteria' -> \n  Settings -> Hysteria -> \n Pegue el URI de configuraci�n de Hysteria2 para importar \n "
 
-ip=$(cat < /bin/ejecutar/IPcgh) || ip=$(curl -s4m8 ip.sb -k)
+ip=`cat /etc/VpsPackdir/ip`;
 
 red(){
     echo -e "\033[31m\033[01m$1\033[0m"
