@@ -1,0 +1,87 @@
+ofus () {
+unset txtofus
+number=$(expr length $1)
+for((i=1; i<$number+1; i++)); do
+txt[$i]=$(echo "$1" | cut -b $i)
+case ${txt[$i]} in
+".") txt[$i]="x";;
+"x") txt[$i]=".";;
+"5") txt[$i]="s";;
+"s") txt[$i]="5";;
+"1") txt[$i]="@";;
+"@") txt[$i]="1";;
+"2") txt[$i]="?";;
+"?") txt[$i]="2";;
+"4") txt[$i]="0";;
+"0") txt[$i]="4";;
+"/") txt[$i]="K";;
+"K") txt[$i]="/";;
+esac
+txtofus+="${txt[$i]}"
+done
+echo "$txtofus" | rev
+}
+
+clear&&clear
+# exit 1 es fallido
+# exit 0 es exitosa
+
+if [ $# -ne 4 ]; then
+    echo "Servidor Hysteria UDPMod ..."
+    echo "LOS ARGUMENTOS SON INVALIDOS"
+    exit 1
+fi
+
+[[ ! -e /etc/cghkey ]] && echo -e "NO EXISTEN VALIDADORES DEL SCRIPT" && exit
+
+[[ -e /etc/cghkey ]] && {
+[[ -z ${IP} ]] && IP=$(cat < /bin/ejecutar/IPcgh)
+Key="$(cat /etc/cghkey)"
+IiP="$(ofus "$Key" | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -o -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')"
+[[ ! -e /file ]] && wget -q -O /file https://raw.githubusercontent.com/powermx/httpcustomudp/main/txt.txt
+_double=$(cat < /file)
+_check2="$(echo -e "$_double" | grep ${IiP})"
+[[ -z ${_check2} ]] && echo -e "BINARIO NO CORRESPONDE AL SCRIPT" && exit
+}
+
+ADDR=$1
+AUTH=$2
+SEND=$3
+RECV=$4
+
+[[ $(echo -e "${AUTH}" | grep -i ':') ]] && {
+pUSER=$(echo -e "${AUTH}"| cut -d ':' -f1)
+CLAVE=$(echo -e "${AUTH}"| cut -d ':' -f2)
+ofusMODE=1
+} || {
+pUSER=${AUTH}
+ofusMODE=0
+}
+
+[[ $(cat "/etc/passwd"  | grep -w ${pUSER}) ]] && {
+FValid=$(date +%s)
+UValid=$(chage -l ${pUSER} |grep -i co |cut -d ':' -f2)
+DataSEC=$(date +%s --date="${UValid}")
+[[ ${FValid} -gt ${DataSEC} ]] && {
+echo -e "AUTENTIFICACION FALLIDA POR USUARIO CADUCADO : ${pUSER} "
+exit 1 
+} || {
+[[ ${ofusMODE} = 1 ]] && {
+#[[ -e /etc/VpsPackdir/senha/${pUSER} ]] && _PASS=$(cat /etc/VpsPackdir/senha/${pUSER} | grep "senha" | awk '{print $2}')
+[[ -e /etc/VpsPackdir/senha/${pUSER} ]] && _PASS=$(cat /etc/VpsPackdir/senha/${pUSER} | grep "senha"|cut -d ":" -f2 | sed 's/\s\+//g')
+[[ ${CLAVE} = ${_PASS} ]] && {
+echo -e "AUTENTIFICACION EXITOSA / CLAVE VALIDA : ${AUTH} / ${_PASS} "
+exit 0 
+} || {
+echo -e "AUTENTIFICACION FALLIDA / CLAVE INVALIDA : ${pUSER} / ${_PASS}"
+exit 1
+}
+						} || { 
+						echo -e "AUTENTIFICACION EXITOSA PARA : ${pUSER} "
+						exit 0
+						}
+											}
+} || {
+echo -e "AUTENTIFICACION FALLIDA / USER NO EXISTE : ${pUSER} "
+exit 1
+}
