@@ -82,5 +82,6 @@ systemctl start udp-custom &>/dev/null
 
 echo enable service udp-custom
 systemctl enable udp-custom &>/dev/null
+iptables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport 50001:60000 -j DNAT --to-destination :36712
 }
 fun_bar 'preparar'
